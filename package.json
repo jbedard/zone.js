@@ -26,7 +26,7 @@
     "karma-jasmine:autoclose": "npm run karma-jasmine:single && npm run ws-client",
     "karma-jasmine-phantomjs:autoclose": "npm run karma-jasmine:phantomjs && npm run ws-client",
     "lint": "gulp lint",
-    "prepublish": "tsc && gulp build",
+    "prepublishOnly": "tsc && gulp build",
     "promisetest": "gulp promisetest",
     "promisefinallytest": "mocha promise.finally.spec.js",
     "webdriver-start": "webdriver-manager update && webdriver-manager start",
@@ -61,6 +61,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@bazel/typescript": "^0.25.1",
     "@types/jasmine": "2.2.33",
     "@types/node": "^9.x",
     "@types/systemjs": "^0.19.30",
