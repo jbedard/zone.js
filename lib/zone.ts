@@ -305,7 +305,7 @@ interface ZoneType {
   /** @internal */
   __load_patch(name: string, fn: _PatchFn): void;
 
-  /** @internal */
+  /** Was @ internal but this prevents compiling tests as separate unit */
   __symbol__(name: string): string;
 }
 
