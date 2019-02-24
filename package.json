@@ -15,8 +15,13 @@
     "test": "test"
   },
   "scripts": {
-    "build:bazel": "bazel build //...",
+    "build:bazel": "bazel build //:npm_package",
     "build:gulp": "gulp build",
+    "// 1": "Run both builds and make a directory to extract the current npm package",
+    "prebuild:compare": "yarn build:gulp && yarn build:bazel && rm -rf build/current-pkg && mkdir -p build/current-pkg",
+    "// 2": "This command assumes you have installed the meld tool to have graphical diff",
+    "build:compare": "npm pack | xargs tar -xvz -C build/current-pkg -f && meld build/current-pkg/package build/bin/npm_package",
+
     "changelog": "gulp changelog",
     "ci": "npm run lint && npm run format && npm run promisetest && npm run test:single && npm run test-node",
     "closure:test": "scripts/closure/closure_compiler.sh",

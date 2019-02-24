@@ -1,1 +1,22 @@
 exports_files(["tsconfig.json"])
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "npm_package")
+
+npm_package(
+    name = "npm_package",
+    srcs = [
+        "CHANGELOG.md",
+        "LICENSE",
+        "LICENSE.wrapped",
+        "README.md",
+        "package.json",
+    ],
+    replacements = {
+        # Since the bazel package is experimental, patch the version number
+        # with a -bazel.0 suffix.
+        "\"version\": \"([0-9\.]+)\"": "\"version\": \"$1-bazel.0\"",
+    },
+    deps = [
+        "//lib",
+    ],
+)
