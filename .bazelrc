@@ -1,1 +1,1 @@
---symlink_prefix=dist/
+build --symlink_prefix=build/

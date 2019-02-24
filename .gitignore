@@ -1,4 +1,4 @@
-bazel-out/
+bazel-out
 build/
 build-esm/
 blink-core/

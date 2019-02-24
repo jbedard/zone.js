@@ -15,6 +15,8 @@
     "test": "test"
   },
   "scripts": {
+    "build:bazel": "bazel build //...",
+    "build:gulp": "gulp build",
     "changelog": "gulp changelog",
     "ci": "npm run lint && npm run format && npm run promisetest && npm run test:single && npm run test-node",
     "closure:test": "scripts/closure/closure_compiler.sh",
@@ -61,6 +63,9 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@bazel/bazel": "^0.22.0",
+    "@bazel/buildifier": "^0.22.0",
+    "@bazel/ibazel": "^0.9.1",
     "@bazel/typescript": "^0.25.1",
     "@types/jasmine": "2.2.33",
     "@types/node": "^9.x",
