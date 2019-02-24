@@ -1,6 +1,13 @@
-exports_files(["tsconfig.json"])
-
 load("@build_bazel_rules_nodejs//:defs.bzl", "npm_package")
+
+exports_files(["tsconfig.json", "angular_license.txt"])
+
+filegroup(
+    name = "dist",
+    srcs = [
+        "//dist:wtf.js",
+    ],
+)
 
 npm_package(
     name = "npm_package",
@@ -18,5 +25,6 @@ npm_package(
     },
     deps = [
         "//lib",
+        ":dist",
     ],
 )

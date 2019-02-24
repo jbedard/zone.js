@@ -1,0 +1,10 @@
+load("@build_bazel_rules_nodejs//:defs.bzl", "rollup_bundle")
+
+package(default_visibility = ["//:__pkg__"])
+
+rollup_bundle(
+    name = "wtf",
+    entry_point = "lib/zone-spec/wtf",
+    deps = ["//lib"],
+    license_banner = "//:angular_license.txt",
+)
