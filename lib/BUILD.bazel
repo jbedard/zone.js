@@ -4,4 +4,10 @@ ts_library(
     name = "lib",
     srcs = glob(["**/*.ts"]),
     visibility = ["//:__subpackages__"],
+    deps = [
+        "@npm//@types/node",
+        "@npm//@types/jasmine",
+        "@npm//@types/systemjs",
+        "@npm//rxjs",
+    ]
 )
