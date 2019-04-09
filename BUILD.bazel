@@ -27,5 +27,6 @@ npm_package(
         "//lib",
         "//lib/wtf",
         "//lib/zone-node",
+        "//lib/zone-node-copy",
     ],
 )
