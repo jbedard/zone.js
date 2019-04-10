@@ -1,13 +1,60 @@
 load("@build_bazel_rules_nodejs//:defs.bzl", "npm_package")
+load("//lib:rollup.bzl", "rollup_bundle")
+load("//:umd.bzl", "umd_bundle_names")
 
-exports_files(["tsconfig.json", "tsconfig-node.json", "angular_license.txt"])
+exports_files([
+    "tsconfig.json",
+    "tsconfig-node.json",
+    "angular_license.txt",
+])
 
-filegroup(
-    name = "dist",
-    srcs = [
-        "//dist:wtf.js",
-    ],
-)
+BUNDLES = {
+    "async-test": "lib/testing/async-testing",
+    "fake-async-test": "lib/testing/fake-async",
+    "long-stack-trace-zone-spec": "lib/zone-spec/long-stack-trace",
+    "proxy-zone-spec": "lib/zone-spec/proxy",
+    "rxjs-fake-async": "lib/rxjs/rxjs-fake-async",
+    # FIXME: there is no lib/testing/sync-test
+    # "sync-test": "lib/testing/sync-test",
+    "task-tracking-zone-spec": "lib/zone-spec/task-tracking",
+    "wtf-zone-spec": "lib/zone-spec/wtf",
+    "zone": "lib/browser/rollup-legacy-main",
+    "zone-error": "lib/common/error-rewrite",
+    "zone-evergreen": "lib/browser/rollup-main",
+    "zone-evergreen-testing-bundle": "lib/browser/rollup-test-main",
+    "zone-legacy": "lib/browser/browser-legacy",
+    "zone-mix": "lib/mix/rollup-mix",
+    "zone-node": "lib/node/rollup-main",
+    "zone-patch-bluebird": "lib/extra/bluebird",
+    "zone-patch-canvas": "lib/browser/canvas",
+    "zone-patch-cordova": "lib/extra/cordova",
+    # FIXME: rollup can't resolve the "electron" import
+    # "zone-patch-electron": "lib/extra/electron",
+    "zone-patch-fetch": "lib/common/fetch",
+    "zone-patch-jasmine": "lib/jasmine/jasmine",
+    "zone-patch-jsonp": "lib/extra/jsonp",
+    "zone-patch-media-query": "lib/browser/webapis-media-query",
+    "zone-patch-mocha": "lib/mocha/mocha",
+    "zone-patch-notification": "lib/browser/webapis-notification",
+    "zone-patch-promise-testing": "lib/testing/promise-testing",
+    "zone-patch-resize-observer": "lib/browser/webapis-resize-observer",
+    "zone-patch-rtc-peer-connection": "lib/browser/webapis-rtc-peer-connection",
+    "zone-patch-rxjs": "lib/rxjs/rxjs",
+    "zone-patch-shadydom": "lib/browser/shadydom",
+    "zone-patch-socket-io": "lib/extra/socket-io",
+    "zone-patch-user-media": "lib/browser/webapis-user-media",
+    "zone-testing": "lib/testing/zone-testing",
+    "zone-testing-bundle": "lib/browser/rollup-legacy-test-main",
+    "zone-testing-node-bundle": "lib/node/rollup-test-main",
+}
+
+[
+    rollup_bundle(
+        name = b,
+        entry_point = BUNDLES[b],
+    )
+    for b in BUNDLES
+]
 
 npm_package(
     name = "npm_package",
@@ -23,10 +70,7 @@ npm_package(
         # with a -bazel.0 suffix.
         "\"version\": \"([0-9\.]+)\"": "\"version\": \"$1-bazel.0\"",
     },
-    deps = [
+    deps = BUNDLES.keys() + [
         "//lib",
-        "//lib/wtf",
-        "//lib/zone-node",
-        "//lib/zone-node-copy",
     ],
 )

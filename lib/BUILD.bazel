@@ -1,10 +1,10 @@
-load("@npm_bazel_typescript//:defs.bzl", "ts_library", "ts_config")
-load(":rollup.bzl", "rollup_macro")
+load("@npm_bazel_typescript//:defs.bzl", "ts_library")
+
 package(default_visibility = ["//:__pkg__"])
 
 ts_deps = [
-  "@npm//@types",
-  "@npm//rxjs",
+    "@npm//@types",
+    "@npm//rxjs",
 ]
 
 ts_visibility = ["//:__subpackages__"]
@@ -15,40 +15,3 @@ ts_library(
     visibility = ts_visibility,
     deps = ts_deps,
 )
-
-
-rollup_macro("zone-node", "lib/node/rollup-main")
-rollup_macro("zone", "lib/browser/rollup-legacy-main")
-rollup_macro("zone-evergreen", "lib/browser/rollup-main")
-rollup_macro("zone-legacy", "lib/browser/browser-legacy")
-rollup_macro("zone-testing-bundle", "lib/browser/rollup-legacy-test-main")
-rollup_macro("zone-evergreen-testing-bundle", "lib/browser/rollup-test-main")
-rollup_macro("zone-testing-node-bundle", "lib/node/rollup-test-main")
-rollup_macro("zone-testing", "lib/testing/zone-testing")
-rollup_macro("zone-mix", "lib/mix/rollup-mix")
-rollup_macro("zone-error", "lib/common/error-rewrite")
-rollup_macro("zone-patch-canvas", "lib/browser/canvas")
-rollup_macro("zone-patch-fetch", "lib/common/fetch")
-rollup_macro("zone-patch-media-query", "lib/browser/webapis-media-query")
-rollup_macro("zone-patch-user-media", "lib/browser/webapis-user-media")
-rollup_macro("zone-patch-notification", "lib/browser/webapis-notification")
-rollup_macro("zone-patch-resize-observer", "lib/browser/webapis-resize-observer")
-rollup_macro("zone-patch-rtc-peer-connection", "lib/browser/webapis-rtc-peer-connection")
-rollup_macro("zone-patch-shadydom", "lib/browser/shadydom")
-rollup_macro("zone-patch-cordova", "lib/extra/cordova")
-rollup_macro("zone-patch-electron", "lib/extra/electron")
-rollup_macro("zone-patch-socket-io", "lib/extra/socket-io")
-rollup_macro("zone-patch-bluebird", "lib/extra/bluebird")
-rollup_macro("zone-patch-jsonp", "lib/extra/jsonp")
-rollup_macro("zone-patch-promise-testing", "lib/testing/promise-testing")
-rollup_macro("zone-patch-jasmine", "lib/jasmine/jasmine")
-rollup_macro("zone-patch-mocha", "lib/mocha/mocha")
-rollup_macro("long-stack-trace-zone-spec", "lib/zone-spec/long-stack-trace")
-rollup_macro("proxy-zone-spec", "lib/zone-spec/proxy")
-rollup_macro("task-tracking-zone-spec", "lib/zone-spec/task-tracking")
-rollup_macro("wtf-zone-spec", "lib/zone-spec/wtf")
-rollup_macro("async-test", "lib/testing/aysnc-testing")
-rollup_macro("fake-async-test", "lib/testing/fake-async")
-rollup_macro("sync-test", "lib/testing/sync-test")
-rollup_macro("zone-patch-rxjs", "lib/rxjs/rxjs")
-rollup_macro("rxjs-fake-async", "lib/rxjs/rxjs-fake-async")

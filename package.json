@@ -55,7 +55,10 @@
     "test-node": "gulp test/node",
     "test-bluebird": "gulp test/bluebird",
     "test-mocha": "npm run tsc && concurrently \"npm run tsc:w\" \"npm run ws-server\" \"karma start karma-build-mocha.conf.js\"",
-    "serve": "python -m SimpleHTTPServer 8000"
+    "serve": "python -m SimpleHTTPServer 8000",
+    "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" ! -path \"./build/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
+    "bazel:lint": "yarn bazel:format --lint=warn",
+    "bazel:lint-fix": "yarn bazel:format --lint=fix"
   },
   "repository": {
     "type": "git",
