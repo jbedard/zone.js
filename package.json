@@ -75,6 +75,7 @@
     "@bazel/buildifier": "^0.22.0",
     "@bazel/ibazel": "^0.9.1",
     "@bazel/typescript": "^0.25.1",
+    "@bazel/karma": "^0.27.7",
     "@types/jasmine": "2.2.33",
     "@types/node": "^9.x",
     "@types/systemjs": "^0.19.30",
