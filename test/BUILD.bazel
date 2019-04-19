@@ -4,7 +4,19 @@ load(":test.bzl", "get_web_test_deps")
 
 ts_library(
     name = "test_lib",
-    srcs = glob(["**/*.ts"]),
+    srcs = glob(["**/*.spec.ts", "wtf_mock.ts", "test-util.ts", "rxjs/rxjs.util.ts"]),
+    deps = [
+        "//lib",
+        "@npm//@types",
+        "@npm//rxjs",
+    ],
+)
+
+ts_library(
+    name = "test_browser",
+    srcs = [
+        "browser_build_test.ts",
+    ],
     deps = [
         "//lib",
         "@npm//@types",
@@ -19,7 +31,9 @@ ts_web_test_suite(
     srcs = [
         "@npm//node_modules/tslib:tslib.js",
     ],
-    runtime_deps = web_test_deps,
+    runtime_deps = [
+        ":test_browser",
+    ],
     bootstrap = [
         "@npm//node_modules/core-js-bundle:index.js",
     ],
@@ -29,6 +43,5 @@ ts_web_test_suite(
     deps = [
         ":test_lib",
         "@npm//karma-jasmine",
-    ]
+    ],
 )
-

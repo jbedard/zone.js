@@ -1,0 +1,10 @@
+import './wtf_mock';
+import './test_fake_polyfill';
+import '../lib/zone';
+import '../lib/common/promise';
+import '../lib/jasmine/jasmine';
+import '../lib/mocha/mocha';
+import './test-env-setup-jasmine';
+import './test-env-setup-mocha';
+import '../lib/common/error-rewrite';
+import './browser_entry_point';
