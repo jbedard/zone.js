@@ -1,6 +1,14 @@
 load("@npm_bazel_typescript//:defs.bzl", "ts_library")
-
 package(default_visibility = ["//:__pkg__"])
+
+exports_files([
+    "zone.ts",
+    "common/promise.ts",
+    "common/to-string.ts",
+    "browser/api-util.ts",
+    "browser/browser-legacy.ts",
+    "browser/browser.ts",
+])
 
 ts_deps = [
     "@npm//@types",
@@ -12,6 +20,13 @@ ts_visibility = ["//:__subpackages__"]
 ts_library(
     name = "lib",
     srcs = glob(["**/*.ts"]),
+    visibility = ts_visibility,
+    deps = ts_deps,
+)
+
+ts_library(
+    name = "browser_rollup",
+    srcs = glob(["browser/rollup-legacy-main.ts"]),
     visibility = ts_visibility,
     deps = ts_deps,
 )

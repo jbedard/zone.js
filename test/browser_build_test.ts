@@ -7,4 +7,5 @@ import '../lib/mocha/mocha';
 import './test-env-setup-jasmine';
 import './test-env-setup-mocha';
 import '../lib/common/error-rewrite';
+import './browser_zone_setup';
 import './browser_entry_point';

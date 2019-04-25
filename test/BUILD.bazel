@@ -1,47 +1,50 @@
-load("@npm_bazel_typescript//:defs.bzl", "ts_library")
 load("@npm_bazel_karma//:index.bzl", "ts_web_test_suite")
-load(":test.bzl", "get_web_test_deps")
+load("@npm_bazel_typescript//:defs.bzl", "ts_library")
 
 ts_library(
-    name = "test_lib",
-    srcs = glob(["**/*.spec.ts", "wtf_mock.ts", "test-util.ts", "rxjs/rxjs.util.ts"]),
-    deps = [
-        "//lib",
-        "@npm//@types",
-        "@npm//rxjs",
-    ],
+  name = "test_lib",
+  deps = [
+    "//lib",
+    "@npm//@types",
+    "@npm//rxjs",
+  ],
+  srcs = glob([
+    "**/*.spec.ts",
+    "browser_entry_point.ts",
+    "browser-zone-setup.ts",
+    "common_tests.ts",
+    "test-env-setup-jasmin.ts",
+    "test-env-setup-mocha.ts",
+    "test-util.ts",
+    "rxjs/rxjs.util.ts",
+    "wtf_mock.ts",
+  ])
 )
 
 ts_library(
-    name = "test_browser",
-    srcs = [
-        "browser_build_test.ts",
-    ],
-    deps = [
-        "//lib",
-        "@npm//@types",
-        "@npm//rxjs",
-    ],
+  name = "init_test_browser",
+  deps = [
+    ":test_lib",
+    "@npm//@types",
+    "@npm//rxjs",
+  ],
+  srcs = [
+    "browser_build_test.ts",
+  ]
 )
-
-web_test_deps = get_web_test_deps()
 
 ts_web_test_suite(
-    name = "test",
-    srcs = [
-        "@npm//node_modules/tslib:tslib.js",
-    ],
-    runtime_deps = [
-        ":test_browser",
-    ],
-    bootstrap = [
-        "@npm//node_modules/core-js-bundle:index.js",
-    ],
-    browsers = [
-        "@io_bazel_rules_webtesting//browsers:chromium-local",
-    ],
-    deps = [
-        ":test_lib",
-        "@npm//karma-jasmine",
-    ],
+  name = "test",
+  deps = [
+    "@npm//karma-jasmine",
+  ],
+  srcs = [        
+    "@npm//node_modules/tslib:tslib.js",
+  ],
+  runtime_deps = [
+    "//lib:browser_rollup",
+  ],
+  browsers = [
+    "@io_bazel_rules_webtesting//browsers:chromium-local",
+  ]
 )
