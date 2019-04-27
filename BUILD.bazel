@@ -1,6 +1,5 @@
 load("@build_bazel_rules_nodejs//:defs.bzl", "npm_package")
 load("//lib:rollup.bzl", "rollup_bundle")
-load("//:umd.bzl", "umd_bundle_names")
 
 exports_files([
     "tsconfig.json",
@@ -56,6 +55,38 @@ BUNDLES = {
     for b in BUNDLES
 ]
 
+filegroup(
+    name = "umds",
+    srcs = [
+        b + ".umd.js"
+        for b in BUNDLES.keys()
+    ]
+)
+
+filegroup(
+    name = "umds_min",
+    srcs = [
+        b + ".min.umd.js"
+        for b in BUNDLES.keys()
+    ]
+)
+
+filegroup(
+    name = "umds_es5",
+    srcs = [
+        b + ".es5umd.js"
+        for b in BUNDLES.keys()
+    ]
+)
+
+filegroup(
+    name = "umds_es5_min",
+    srcs = [
+        b + ".min.es5umd.js"
+        for b in BUNDLES.keys()
+    ]
+)
+
 npm_package(
     name = "npm_package",
     srcs = [
@@ -71,6 +102,8 @@ npm_package(
         "\"version\": \"([0-9\.]+)\"": "\"version\": \"$1-bazel.0\"",
     },
     deps = BUNDLES.keys() + [
+        ":umds",
+        ":umds_es5",
         "//lib",
     ],
 )
