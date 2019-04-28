@@ -55,36 +55,58 @@ BUNDLES = {
     for b in BUNDLES
 ]
 
+[
+     filegroup(
+         name = b + ".umd",
+         srcs = [":" + b],
+         output_group = "umd",
+     )
+     for b in BUNDLES
+]
+
+[
+     filegroup(
+         name = b + ".umd.min",
+         srcs = [":" + b],
+         output_group = "umd_min",
+     )
+     for b in BUNDLES
+]
+
 filegroup(
     name = "umds",
     srcs = [
-        b + ".umd.js"
+        ":" + b
         for b in BUNDLES.keys()
-    ]
+    ],
+    output_group = "umd"
 )
 
 filegroup(
     name = "umds_min",
     srcs = [
-        b + ".min.umd.js"
+        ":" + b
         for b in BUNDLES.keys()
-    ]
+    ],
+    output_group = "umd_min",
 )
 
 filegroup(
     name = "umds_es5",
     srcs = [
-        b + ".es5umd.js"
+        ":" + b
         for b in BUNDLES.keys()
-    ]
+    ],
+    output_group = "es5_umd"
 )
 
 filegroup(
     name = "umds_es5_min",
     srcs = [
-        b + ".min.es5umd.js"
+        ":" + b
         for b in BUNDLES.keys()
-    ]
+    ],
+    output_group = "es5_umd_min"
 )
 
 npm_package(
@@ -103,7 +125,9 @@ npm_package(
     },
     deps = BUNDLES.keys() + [
         ":umds",
+        ":umds_min",
         ":umds_es5",
+        ":umds_es5_min",
         "//lib",
     ],
 )
