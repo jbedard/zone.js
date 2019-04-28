@@ -47,6 +47,9 @@ BUNDLES = {
     "zone-testing-node-bundle": "lib/node/rollup-test-main",
 }
 
+NPM_BUNDLE_TYPES = ["umd", "umd_min", "es5_umd", "es5_umd_min"];
+
+# the rollup bundles
 [
     rollup_bundle(
         name = b,
@@ -55,59 +58,28 @@ BUNDLES = {
     for b in BUNDLES
 ]
 
+# extract js+map output_group of each bundle type for each bundle
 [
-     filegroup(
-         name = b + ".umd",
-         srcs = [":" + b],
-         output_group = "umd",
-     )
-     for b in BUNDLES
+    [
+      filegroup(
+          name = b + "." + bundle_type,
+          srcs = [":" + b],
+          output_group = bundle_type,
+      )
+      for bundle_type in NPM_BUNDLE_TYPES
+    ]
+    for b in BUNDLES
 ]
 
+# combine filegroups by bundle type
+# (just a helper for easy deps[] declaration in npm_package)
 [
-     filegroup(
-         name = b + ".umd.min",
-         srcs = [":" + b],
-         output_group = "umd_min",
-     )
-     for b in BUNDLES
+    filegroup(
+      name = bundle_type,
+      srcs = [":" + b + "." + bundle_type for b in BUNDLES],
+    )
+    for bundle_type in NPM_BUNDLE_TYPES
 ]
-
-filegroup(
-    name = "umds",
-    srcs = [
-        ":" + b
-        for b in BUNDLES.keys()
-    ],
-    output_group = "umd"
-)
-
-filegroup(
-    name = "umds_min",
-    srcs = [
-        ":" + b
-        for b in BUNDLES.keys()
-    ],
-    output_group = "umd_min",
-)
-
-filegroup(
-    name = "umds_es5",
-    srcs = [
-        ":" + b
-        for b in BUNDLES.keys()
-    ],
-    output_group = "es5_umd"
-)
-
-filegroup(
-    name = "umds_es5_min",
-    srcs = [
-        ":" + b
-        for b in BUNDLES.keys()
-    ],
-    output_group = "es5_umd_min"
-)
 
 npm_package(
     name = "npm_package",
@@ -123,11 +95,5 @@ npm_package(
         # with a -bazel.0 suffix.
         "\"version\": \"([0-9\.]+)\"": "\"version\": \"$1-bazel.0\"",
     },
-    deps = BUNDLES.keys() + [
-        ":umds",
-        ":umds_min",
-        ":umds_es5",
-        ":umds_es5_min",
-        "//lib",
-    ],
+    deps = ["//lib"] + [":" + bundle_type for bundle_type in NPM_BUNDLE_TYPES]
 )
